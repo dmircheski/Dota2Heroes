@@ -32,19 +32,19 @@ exports.getHero = async (req, res, next) => {
 exports.updateHero = async (req, res, next) => {
     let myUpdatedHero = req.body.Hero
     heroToChange = await session.load('Heroes/' + myUpdatedHero.id)
-    if (myUpdatedHero.Abilities != undefined) {
-        let xAbis = _.intersectionBy(myUpdatedHero.Abilities, heroToChange.Abilities, 'Name');
-        if (xAbis != null){
-            heroToChange.Abilities.forEach(element => {
-                if(_.intersectionBy(element, xAbis, 'Name') {
-                    element = 
-                } 
-            })
-            heroToChange.Abilities.
-        }
+    // if (myUpdatedHero.Abilities != undefined) {
+    //     // let xAbis = _.intersectionBy(myUpdatedHero.Abilities, heroToChange.Abilities, 'Name');
+    //     // if (xAbis != null){
+    //     //     heroToChange.Abilities.forEach(element => {
+    //     //         if(_.intersectionBy(element, xAbis, 'Name') {
+    //     //             element = 
+    //     //         } 
+    //     //     })
+    //     //     heroToChange.Abilities.
+    //     // }
 
 
-    }
+    // }
 
     heroToChange = Object.assign(heroToChange, myUpdatedHero)
     await session.saveChanges(heroToChange)
