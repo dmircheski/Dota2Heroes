@@ -43,7 +43,6 @@ exports.updateHero = async (req, res, next) => {
     //     //     heroToChange.Abilities.
     //     // }
 
-
     // }
 
     heroToChange = Object.assign(heroToChange, myUpdatedHero)
