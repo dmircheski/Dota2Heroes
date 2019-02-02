@@ -30,24 +30,35 @@ exports.getHero = async (req, res, next) => {
 }
 
 exports.updateHero = async (req, res, next) => {
-    let myUpdatedHero = req.body.Hero
-    heroToChange = await session.load('Heroes/' + myUpdatedHero.id)
-    // if (myUpdatedHero.Abilities != undefined) {
-    //     // let xAbis = _.intersectionBy(myUpdatedHero.Abilities, heroToChange.Abilities, 'Name');
-    //     // if (xAbis != null){
-    //     //     heroToChange.Abilities.forEach(element => {
-    //     //         if(_.intersectionBy(element, xAbis, 'Name') {
-    //     //             element = 
-    //     //         } 
-    //     //     })
-    //     //     heroToChange.Abilities.
-    //     // }
-
-    // }
-
-    heroToChange = Object.assign(heroToChange, myUpdatedHero)
-    await session.saveChanges(heroToChange)
-    res.send(heroToChange, 200)
+    let heroRequest = req.body.Hero
+    let heroDatabase = await session.load('Heroes/' + heroRequest.id)
+    if (heroRequest.Abilities != undefined) {
+        let mergedAbilities = []
+        let oldAbilities = heroDatabase.Abilities
+        let newAbilities = heroRequest.Abilities
+        newAbilities.forEach(newAbility => {
+            oldAbilities.forEach(oldAbility => {
+                if (newAbility['name'] == oldAbility['name']) {
+                    mergedAbilities.push({
+                        ...oldAbility,
+                        ...newAbility
+                    })
+                }
+            })
+        });
+        oldAbilities.forEach(oldAbility => {
+            mergedAbilities.forEach(mergedAbility => {
+                if(oldAbility['name'] != mergedAbility['name']) {
+                    mergedAbilities.push(oldAbility)
+                }
+            })
+        
+        })
+        heroRequest.Abilities = mergedAbilities
+    }
+    heroDatabase = Object.assign(heroDatabase, heroRequest)
+    await session.saveChanges(heroDatabase)
+    res.send(heroDatabase, 200)
 }
 
 exports.createHero = async (req, res, next) => {
